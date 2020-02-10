@@ -2,7 +2,6 @@
 <#import "parts/userForms.ftlh" as userForms>
 
 <@body.body>
-    Sign Up
-    @{message}
-    <@userForms.login "/registration" "Sign Up"/>
+    <h2>Регистрация</h2>
+    <@userForms.login "/registration" "Зарегитрироваться"/>
 </@body.body>

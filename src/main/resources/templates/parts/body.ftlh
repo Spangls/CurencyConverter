@@ -1,5 +1,3 @@
-<#import "userForms.ftlh" as userForms>
-
 <#macro body>
     <!DOCTYPE html>
     <html lang="en">
@@ -9,7 +7,6 @@
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     </head>
     <body>
-     <@userForms.logout/>
      <a href="/converter">Конвертер</a>
      <a href="/history">История</a>
     <div>

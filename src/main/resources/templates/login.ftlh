@@ -2,7 +2,7 @@
 <#import "parts/userForms.ftlh" as userForms>
 
 <@body.body>
-    Sign In
-    <@userForms.login "/login" "Sign In"/>
-    <a href="/registration">Sign Up</a>
+    <h2>Вход</h2>
+    <@userForms.login "/login" "Войти"/>
+    <a href="/registration">Зарегистрироваться</a>
 </@body.body>

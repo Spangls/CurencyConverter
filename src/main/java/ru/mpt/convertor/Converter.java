@@ -46,14 +46,12 @@ public class Converter {
     @Scheduled(fixedRate = 86_400_000)
     @PostConstruct
     public void updateRate(){
-        currencyList = currencyRepo.findAll();
-        System.out.println("Update");
         try {
-            CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
-            URLConnection connection = new URL(RATE_URL).openConnection();
-            Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(connection.getInputStream());
-            NodeList currencyList = document.getDocumentElement().getElementsByTagName("Valute");
             if (rateRepo.findFirstByDate(LocalDate.now()) == null){
+                CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+                URLConnection connection = new URL(RATE_URL).openConnection();
+                Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(connection.getInputStream());
+                NodeList currencyList = document.getDocumentElement().getElementsByTagName("Valute");
                 for (int i = 0; i < currencyList.getLength(); i++) {
                     Element valute = (Element) currencyList.item(i);
                     String numCode = valute.getElementsByTagName("NumCode").item(0).getTextContent();

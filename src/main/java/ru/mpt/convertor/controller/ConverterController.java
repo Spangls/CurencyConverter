@@ -14,9 +14,9 @@ public class ConverterController {
     @Autowired
     private Converter converter;
 
-    @GetMapping()
+    @GetMapping("/")
     public String main() {
-        return "home";
+        return "redirect:/converter";
     }
 
     @GetMapping("/converter")
@@ -29,7 +29,7 @@ public class ConverterController {
     public @ResponseBody
     String convert(
             @RequestParam String sourceCurrency,
-            @RequestParam(name = "sourceAmount") String sourceAmount,
+            @RequestParam String sourceAmount,
             @RequestParam String targetCurrency) {
         return converter.convert(sourceCurrency, Float.parseFloat(sourceAmount.replace(",", ".")), targetCurrency).toString().replace(",", ".");
     }
