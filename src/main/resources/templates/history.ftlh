@@ -39,6 +39,8 @@
                     <td>${history.targetCurrencyAmount}</td>
                     <td>${history.date}</td>
                 </tr>
+                <#else>
+                <h2>Истории по заданным параметрам не найдено.</h2>
             </#list>
             </tbody>
         </table>

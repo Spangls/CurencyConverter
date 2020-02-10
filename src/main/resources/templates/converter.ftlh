@@ -9,7 +9,7 @@
                     <tbody>
                     <tr>
                         <td>
-                            <select name="sourceCurrency">
+                            <select name="sourceCurrency" onchange="convert(this)">
                                 <#list currencyList as currency>
                                     <option name="currency" value="${currency.charCode}">${currency.charCode} (${currency.name})</option>
                                 </#list>
@@ -19,7 +19,7 @@
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </td>
                         <td>
-                            <select name="targetCurrency">
+                            <select name="targetCurrency" onchange="convert(this)">
                                 <#list currencyList as currency>
                                     <option name="currency" value="${currency.charCode}">${currency.charCode} (${currency.name})</option>
                                 </#list>
@@ -32,7 +32,6 @@
                                    onclick="switchSourceAndTarget(this)" value="0" step="any" onchange="convert(this)"/>
                         </td>
                         <td>
-<#--                            <input type="submit" value="Рассчитать">-->
                         </td>
                         <td>
                             <input type="number" name="targetAmount" placeholder="Сумма"
@@ -47,12 +46,12 @@
             function convert(element) {
                 var sourceCurrency, targetCurrency,
                     sourceAmount, switchCurrency, _csrf;
-                if (element.name == "targetAmount") {
+                if (element.name == "targetAmount" || element.name == "targetCurrency") {
                     sourceCurrency = $('select[name=targetCurrency]').val();
                     targetCurrency = $('select[name=sourceCurrency]').val();
                     sourceAmount = $('input[name=targetAmount]').val();
                     switchCurrency = true;
-                } else if (element.name == "sourceAmount") {
+                } else if (element.name == "sourceAmount" || element.name == "sourceCurrency") {
                     sourceCurrency = $('select[name=sourceCurrency]').val();
                     targetCurrency = $('select[name=targetCurrency]').val();
                     sourceAmount = $('input[name=sourceAmount]').val();

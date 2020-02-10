@@ -37,7 +37,7 @@ public class HistoryController {
 
         List<History> history;
         if (sourceCurrency == null || targetCurrency == null)
-            history = new ArrayList<>();
+            history = historyRepo.findAllByDate(LocalDate.now());
         else {
             Currency sc = currencyRepo.findFirstByCharCode(sourceCurrency);
             Currency tc = currencyRepo.findFirstByCharCode(targetCurrency);
