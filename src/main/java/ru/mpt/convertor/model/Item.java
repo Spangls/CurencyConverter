@@ -17,6 +17,7 @@ public class Item {
     @JoinColumn(name = "manufactorer_id", nullable = false)
     private Manufacturer manufacturer;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false, length = 10)
     private ItemType type;
 

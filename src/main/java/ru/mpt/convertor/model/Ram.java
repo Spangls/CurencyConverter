@@ -1,9 +1,9 @@
 package ru.mpt.convertor.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "ram")
 public class Ram {
 
     @Id
@@ -18,7 +18,8 @@ public class Ram {
     @Column(name = "num_of_modules", nullable = true, length = 10)
     private String numOfModules;
 
-    private Integer speed;
+    @Column(name = "frequency", nullable = true)
+    private Integer frequency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tech", nullable = false, length = 10)
@@ -51,12 +52,12 @@ public class Ram {
         this.numOfModules = numOfModules;
     }
 
-    public Integer getSpeed() {
-        return speed;
+    public Integer getFrequency() {
+        return frequency;
     }
 
-    public void setSpeed(Integer speed) {
-        this.speed = speed;
+    public void setFrequency(Integer speed) {
+        this.frequency = speed;
     }
 
     public RamTech getRamTech() {
