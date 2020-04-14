@@ -11,11 +11,15 @@ public class Cpu {
     @OneToOne(fetch = FetchType.EAGER)
     private Item  item;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "socket", nullable = false, length = 15)
     private Socket socket;
 
+    @Column(name = "cores")
     private Integer cores;
+    @Column(name = "flows")
     private Integer flows;
+    @Column(name = "frequency")
     private Float frequency;
 
     public Integer getId() {

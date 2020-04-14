@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ItemRepo extends CrudRepository<Item, Integer> {
     List<Item> findAll();
+
+    Item findFirstById(Integer id);
 }

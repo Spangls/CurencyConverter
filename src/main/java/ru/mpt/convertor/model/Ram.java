@@ -13,12 +13,13 @@ public class Ram {
     @OneToOne(fetch = FetchType.EAGER)
     private Item  item;
 
+    @Column(name = "capacity")
     private Integer capacity;
 
-    @Column(name = "num_of_modules", nullable = true, length = 10)
+    @Column(name = "num_of_modules", length = 10)
     private String numOfModules;
 
-    @Column(name = "frequency", nullable = true)
+    @Column(name = "frequency")
     private Integer frequency;
 
     @Enumerated(EnumType.STRING)

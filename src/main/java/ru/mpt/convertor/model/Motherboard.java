@@ -22,11 +22,12 @@ public class Motherboard {
     @Enumerated(EnumType.STRING)
     @Column(name = "chipset", nullable = false, length = 20)
     private Chipset chipset;
-    @Column(name = "number_of_ram_sockets", nullable = true)
+    @Column(name = "number_of_ram_sockets")
     private Integer num_of_ram;
     @Enumerated(EnumType.STRING)
     @Column(name = "ram_tech", nullable = false, length = 10)
     private RamTech ramTech;
+    @Column(name = "ports")
     private String ports;
 
     public Integer getId() {

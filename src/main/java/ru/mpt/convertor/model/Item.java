@@ -21,8 +21,9 @@ public class Item {
     @Column(name = "item_type", nullable = false, length = 10)
     private ItemType type;
 
+    @Column(name = "weight")
     private Float weight;
-    @Column(name = "size", nullable = true, length = 50)
+    @Column(name = "size", length = 50)
     private String size;
 
     public Integer getId() {
