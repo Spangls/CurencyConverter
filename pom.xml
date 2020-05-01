@@ -10,9 +10,10 @@
 	</parent>
 	<groupId>ru.mpt</groupId>
 	<artifactId>convertor</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>convertor</name>
+	<version>1</version>
+	<name>mypc</name>
 	<description>Demo project for Spring Boot</description>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>13</java.version>
@@ -70,8 +71,20 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>
+								ru.mpt.convertor.ConverterApplication
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

@@ -4,10 +4,11 @@ import org.springframework.data.repository.CrudRepository;
 import ru.mpt.convertor.model.Ram;
 import ru.mpt.convertor.model.RamTech;
 
+import java.util.List;
 import java.util.Set;
 
 public interface RamRepo extends CrudRepository<Ram, Integer> {
-    Set<Ram> findAll();
+    List<Ram> findAll();
 
     Set<Ram> findAllByRamTech(RamTech ramTech);
 

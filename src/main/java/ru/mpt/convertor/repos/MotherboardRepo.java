@@ -3,6 +3,7 @@ package ru.mpt.convertor.repos;
 import org.springframework.data.repository.CrudRepository;
 import ru.mpt.convertor.model.*;
 
+import java.util.List;
 import java.util.Set;
 
 public interface MotherboardRepo extends CrudRepository<Motherboard, Integer> {
@@ -14,7 +15,7 @@ public interface MotherboardRepo extends CrudRepository<Motherboard, Integer> {
 
     Set<Motherboard> findAllByChipset(Chipset chipset);
 
-    Set<Motherboard> findAll();
+    List<Motherboard> findAll();
 
     Motherboard findFirstById(Integer id);
 

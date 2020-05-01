@@ -3,7 +3,7 @@ package ru.mpt.convertor.model;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {
-    USER, ADMIN;
+    USER, EMPLOYEE, ADMIN;
 
 
     @Override

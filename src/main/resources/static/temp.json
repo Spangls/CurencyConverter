@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "item": {
+      "id": 5,
+      "name": "cpu i",
+      "manufacturer": {
+        "id": 3,
+        "title": "Intel"
+      },
+      "type": "CPU",
+      "weight": null,
+      "size": null,
+      "price": 30000,
+      "count": 0
+    },
+    "cores": 4,
+    "flows": 8,
+    "frequency": 3.2,
+    "socketTitle": "1151 v2"
+  },
+  {
+    "id": 2,
+    "item": {
+      "id": 6,
+      "name": "cpu a",
+      "manufacturer": {
+        "id": 4,
+        "title": "Amd"
+      },
+      "type": "CPU",
+      "weight": null,
+      "size": null,
+      "price": 12000,
+      "count": 0
+    },
+    "cores": 8,
+    "flows": 16,
+    "frequency": 2.8,
+    "socketTitle": "AM4"
+  },
+  {
+    "id": 3,
+    "item": {
+      "id": 13,
+      "name": "cpu i2",
+      "manufacturer": {
+        "id": 3,
+        "title": "Intel"
+      },
+      "type": "CPU",
+      "weight": null,
+      "size": null,
+      "price": 31000,
+      "count": 0
+    },
+    "cores": 4,
+    "flows": 8,
+    "frequency": 4,
+    "socketTitle": "1151 v2"
+  },
+  {
+    "id": 4,
+    "item": {
+      "id": 14,
+      "name": "cpu a2",
+      "manufacturer": {
+        "id": 4,
+        "title": "Amd"
+      },
+      "type": "CPU",
+      "weight": null,
+      "size": null,
+      "price": 21000,
+      "count": 0
+    },
+    "cores": 4,
+    "flows": 8,
+    "frequency": 3.5,
+    "socketTitle": "AM4"
+  }
+]

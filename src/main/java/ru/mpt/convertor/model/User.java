@@ -9,12 +9,17 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usr")
-public class User implements UserDetails{
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+    @Column(name = "second_name")
+    private String secondName;
+    @Column(name = "surname")
+    private String surname;
     private String password;
     private String email;
     private boolean active;
@@ -49,20 +54,17 @@ public class User implements UserDetails{
         return isActive();
     }
 
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String login) {
-        this.username = login;
     }
 
     public String getPassword() {
@@ -95,5 +97,29 @@ public class User implements UserDetails{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 }

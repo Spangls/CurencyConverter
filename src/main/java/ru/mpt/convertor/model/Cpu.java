@@ -1,9 +1,14 @@
 package ru.mpt.convertor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Objects;
 
 @Entity
-public class Cpu {
+public class Cpu{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -13,6 +18,7 @@ public class Cpu {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "socket", nullable = false, length = 15)
+    @JsonIgnore
     private Socket socket;
 
     @Column(name = "cores")
@@ -21,6 +27,14 @@ public class Cpu {
     private Integer flows;
     @Column(name = "frequency")
     private Float frequency;
+
+    @Transient
+    private String socketTitle;
+
+    @PostLoad
+    private void postLoad(){
+        socketTitle = socket.getTitle();
+    }
 
     public Integer getId() {
         return id;
@@ -68,5 +82,43 @@ public class Cpu {
 
     public void setFrequency(Float frequency) {
         this.frequency = frequency;
+    }
+
+    public String getSocketTitle() {
+        return socketTitle;
+    }
+
+    public void setSocketTitle(String socketTitle) {
+        this.socketTitle = socketTitle;
+    }
+
+    @Override
+    public String toString() {
+        return "Cpu{" +
+                "id=" + id +
+                ", item=" + item +
+                ", socket=" + socket +
+                ", cores=" + cores +
+                ", flows=" + flows +
+                ", frequency=" + frequency +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cpu)) return false;
+        Cpu cpu = (Cpu) o;
+        return Objects.equals(id, cpu.id) &&
+                Objects.equals(item, cpu.item) &&
+                socket == cpu.socket &&
+                Objects.equals(cores, cpu.cores) &&
+                Objects.equals(flows, cpu.flows) &&
+                Objects.equals(frequency, cpu.frequency);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, item, socket, cores, flows, frequency);
     }
 }

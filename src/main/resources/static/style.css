@@ -1,0 +1,39 @@
+.filter{
+    width:80%;
+    padding-left: 10%;
+    padding-right: 10%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+.range-input{
+    border: 0;
+}
+
+#items-filter{
+    float: left;
+    background: bisque;
+    width: 20%;
+
+}
+#items-result{
+    float: right;
+    background: dimgray;
+    width: 80%;
+}
+
+.one-row{
+    white-space: nowrap;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.one-row div{
+    display: inline-block;
+    border: 1px solid black;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.one-row p{
+    margin: 3px;
+}

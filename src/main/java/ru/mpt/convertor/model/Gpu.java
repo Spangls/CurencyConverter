@@ -10,7 +10,7 @@ public class Gpu {
     private Integer id;
     @JoinColumn(name = "item_id", nullable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    private Item  item;
+    private Item item;
 
     @Column(name = "vram")
     private Float vram;

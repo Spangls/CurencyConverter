@@ -7,5 +7,6 @@ import java.util.Set;
 
 public interface PriceRepo extends CrudRepository<Price, Integer> {
     Set<Price> findAll();
-    Price findFirstByItemIdOrderByDateDesc(Integer itemId);
+
+    Price findTopByItemIdOrderByDateDesc(Integer itemId);
 }

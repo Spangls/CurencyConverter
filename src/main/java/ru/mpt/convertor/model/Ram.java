@@ -1,5 +1,7 @@
 package ru.mpt.convertor.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,22 +13,26 @@ public class Ram {
     private Integer id;
     @JoinColumn(name = "item_id", nullable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    private Item  item;
+    private Item item;
 
     @Column(name = "capacity")
     private Integer capacity;
-
-    @Column(name = "num_of_modules", length = 10)
-    private String numOfModules;
 
     @Column(name = "frequency")
     private Integer frequency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tech", nullable = false, length = 10)
+    @JsonIgnore
     private RamTech ramTech;
 
+    @Transient
+    private String techTitle;
 
+    @PostLoad
+    private void postLoad(){
+        techTitle = ramTech.getTitle();
+    }
 
 
     public Integer getId() {
@@ -43,14 +49,6 @@ public class Ram {
 
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
-    }
-
-    public String getNumOfModules() {
-        return numOfModules;
-    }
-
-    public void setNumOfModules(String numOfModules) {
-        this.numOfModules = numOfModules;
     }
 
     public Integer getFrequency() {
@@ -75,5 +73,13 @@ public class Ram {
 
     public void setItem(Item item) {
         this.item = item;
+    }
+
+    public String getTechTitle() {
+        return techTitle;
+    }
+
+    public void setTechTitle(String techTitle) {
+        this.techTitle = techTitle;
     }
 }

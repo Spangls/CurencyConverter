@@ -11,7 +11,7 @@ public class PowerSupply {
     private Integer id;
     @JoinColumn(name = "item_id", nullable = false)
     @OneToOne(fetch = FetchType.EAGER)
-    private Item  item;
+    private Item item;
 
     @Column(name = "power")
     private Integer power;

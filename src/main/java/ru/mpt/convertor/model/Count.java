@@ -4,20 +4,20 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "price")
-public class Price {
-
+@Table(name = "count")
+public class Count{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
 
-    @Column(name = "price")
-    private Float price;
-    @Column(name = "date")
+    @Column(name = "change", nullable = false)
+    private Integer change;
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
     public Integer getId() {
@@ -36,12 +36,12 @@ public class Price {
         this.item = item;
     }
 
-    public Float getPrice() {
-        return price;
+    public Integer getChange() {
+        return change;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
+    public void setChange(Integer change) {
+        this.change = change;
     }
 
     public LocalDate getDate() {
