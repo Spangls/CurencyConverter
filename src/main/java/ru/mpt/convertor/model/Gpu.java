@@ -1,7 +1,12 @@
 package ru.mpt.convertor.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "gpu")
 public class Gpu {
@@ -14,28 +19,4 @@ public class Gpu {
 
     @Column(name = "vram")
     private Float vram;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Float getVram() {
-        return vram;
-    }
-
-    public void setVram(Float vram) {
-        this.vram = vram;
-    }
 }

@@ -2,9 +2,23 @@
 
 <@body.body>
     <h2>Производители</h2>
-<form action="manufacturer" method="post">
-    <div><input type="text" name="title" placeholder="Наименование"/></div>
-    <div><input type="hidden" name="_csrf" value="${_csrf.token}"/></div>
-    <div><input type="submit" value="Добавить"/></div>
-</form>
+    <a href="/manufacturer/new">Добавить</a>
+    <table>
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Наименование</td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <#list manufacturers as manufacturer>
+            <tr>
+                <td>${manufacturer.id}</td>
+                <td>${manufacturer.title}</td>
+                <td><a href="/manufacturer/${manufacturer.id}">Изменить</a></td>
+            </tr>
+        </#list>
+        </tbody>
+    </table>
 </@body.body>

@@ -1,30 +1,36 @@
 package ru.mpt.convertor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
+@Data
+@ToString
 @Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Item implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
     @Column(name = "name", nullable = false, length = 100)
+    @NonNull
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "manufactorer_id", nullable = false)
+    @NonNull
     private Manufacturer manufacturer;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "item_type", nullable = false, length = 10)
+    @NonNull
     private ItemType type;
 
     @Column(name = "weight")
@@ -32,133 +38,63 @@ public class Item implements Serializable {
     @Column(name = "size", length = 50)
     private String size;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", fetch = FetchType.EAGER)
     @JsonIgnore
     private Set<Price> prices;
     @OneToMany(mappedBy = "item")
     @JsonIgnore
     private Set<Count> counts;
+    @OneToMany(mappedBy = "item")
+    private Set<Picture> pictures;
 
     @Transient
-    private Float price;
+    private Float price = 0f;
     @Transient
-    private Integer count;
+    private Integer count = 0;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private Cpu cpu;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private CoolingSystem coolingSystem;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private Case _case;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private Gpu gpu;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private HardDrive hardDrive;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private Motherboard motherboard;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private PowerSupply powerSupply;
+    @JsonIgnore
+    @OneToOne(mappedBy = "item")
+    private Ram ram;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "item")
+    private Set<FollowedItem> followedItems;
+
+    @Transient
+    private boolean followed = false;
 
     @PostLoad
-    private void postLoad(){
-        price = Collections.min(prices, Comparator.comparing(Price::getDate)).getPrice();
-        counts.forEach(entry -> count += entry.getChange());
-        if (count == null) count = 0;
+    private void postLoad() {
+        price = Collections.max(prices, Comparator.comparing(Price::getDate)).getPrice();
+        for (Count value : counts) {
+            count += value.getChange();
+        }
         if (price == null) price = 0f;
     }
 
-    public Set<Count> getCounts() {
-        return counts;
-    }
-
-    public void setCounts(Set<Count> counts) {
-        this.counts = counts;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Manufacturer getManufacturer() {
-        return manufacturer;
-    }
-
-    public Float getPrice() {
-        return price;
-    }
-
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
-    public Set<Price> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(Set<Price> prices) {
-        this.prices = prices;
-    }
-
-    public void setManufacturer(Manufacturer manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public Float getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Float weight) {
-        this.weight = weight;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
-    }
-
-    public ItemType getType() {
-        return type;
-    }
-
-    public void setType(ItemType type) {
-        this.type = type;
-    }
-
-//    public Set<Order> getOrders() {
-//        return orders;
-//    }
-//
-//    public void setOrders(Set<Order> orders) {
-//        this.orders = orders;
-//    }
-
-
-
-    public Item() {
-    }
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", manufacturer=" + manufacturer +
-                ", type=" + type +
-                ", weight=" + weight +
-                ", size='" + size + '\'' +
-                ", prices=" + prices +
-                ", counts=" + counts +
-                ", price=" + price +
-                ", count=" + count +
-                '}';
+    public FollowedItem findFollowByUser(User user){
+        return followedItems.stream().filter(followedItem -> followedItem.getUser() == user).findFirst().orElse(null);
     }
 
     @Override
@@ -175,5 +111,19 @@ public class Item implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, manufacturer, type);
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", manufacturer=" + manufacturer +
+                ", type=" + type +
+                ", weight=" + weight +
+                ", size='" + size + '\'' +
+                ", price=" + price +
+                ", count=" + count +
+                '}';
     }
 }

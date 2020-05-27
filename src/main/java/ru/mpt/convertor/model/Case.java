@@ -1,9 +1,13 @@
 package ru.mpt.convertor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "cse")
 public class Case {
@@ -42,50 +46,6 @@ public class Case {
         windowTitle = window.getTitle();
         cffTitle = caseFormFactor.getTitle();
         mffTitle = motherboardFormFactor.getTitle();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public CaseFormFactor getCaseFormFactor() {
-        return caseFormFactor;
-    }
-
-    public void setCaseFormFactor(CaseFormFactor caseFormFactor) {
-        this.caseFormFactor = caseFormFactor;
-    }
-
-    public MotherboardFormFactor getMotherboardFormFactor() {
-        return motherboardFormFactor;
-    }
-
-    public void setMotherboardFormFactor(MotherboardFormFactor motherboardFormFactor) {
-        this.motherboardFormFactor = motherboardFormFactor;
-    }
-
-    public CaseWindow getWindow() {
-        return window;
-    }
-
-    public void setWindow(CaseWindow window) {
-        this.window = window;
-    }
-
-    public String getWindowTitle() {
-        return windowTitle;
     }
 
     public void setWindowTitle(String windowTitle) {

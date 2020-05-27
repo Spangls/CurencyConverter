@@ -1,4 +1,47 @@
 $(function () {
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e,xhr,options) {
+        xhr.setRequestHeader(header, token);
+    });
+    $.fn.serializeObject = function() {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+    $('input.follow-checkbox').change(function () {
+        let $this = $(this);
+        let form = $this.parents('form:first');
+        let url = form.attr('action');
+        let jsonData = form.serializeObject();
+        jsonData['follow'] = !!jsonData['follow'];
+        $.ajax({
+            type: "post",
+            url: url,
+            data: jsonData,
+            success: function (data) {
+                if (data == false)
+                    alert("Что-то пошло не так.")
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error))
+            }
+        });
+    });
+
+    $('#characteristics-header > td[class*="toHide"]').hide();
+    $("#items-filter").children().hide();
+    $("#filter-common").show();
     setCommonPriceRange();
     setCpuCoresRange();
     setCpuFlowsRange();
@@ -26,7 +69,7 @@ function setCommonPriceRange() {
         step: 100,
         change: function (event, ui) {
             $("#common-price").val(ui.values[0] + " - " + ui.values[1]);
-            let switcher =  $("#items-switcher").val();
+            let switcher = $("#items-switcher").val();
             switch (switcher) {
                 case "cpu":
                     filterCpu();
@@ -75,6 +118,7 @@ function setCpuCoresRange() {
     $("#cpu-cores").val($("#cpu-cores-range").slider("values", 0) +
         " - " + $("#cpu-cores-range").slider("values", 1));
 }
+
 function setCpuFlowsRange() {
     $("#cpu-flows-range").slider({
         range: true,
@@ -89,6 +133,7 @@ function setCpuFlowsRange() {
     $("#cpu-flows").val($("#cpu-flows-range").slider("values", 0) +
         " - " + $("#cpu-flows-range").slider("values", 1));
 }
+
 function setCpuFrequencyRange() {
     $("#cpu-frequency-range").slider({
         range: true,
@@ -121,6 +166,7 @@ function setCSFanDiamRange() {
     $("#cs-fan-diam").val($("#cs-fan-diam-range").slider("values", 0) +
         " - " + $("#cs-fan-diam-range").slider("values", 1));
 }
+
 function setCSFanCountRange() {
     $("#cs-fan-count-range").slider({
         range: true,
@@ -170,6 +216,7 @@ function setHDCapacityRange() {
     $("#hd-capacity").val($("#hd-capacity-range").slider("values", 0) +
         " - " + $("#hd-capacity-range").slider("values", 1));
 }
+
 function setHDSpeedRange() {
     $("#hd-speed-range").slider({
         range: true,
@@ -219,6 +266,7 @@ function setPSPowerRange() {
     $("#ps-power").val($("#ps-power-range").slider("values", 0) +
         " - " + $("#ps-power-range").slider("values", 1));
 }
+
 function setPSSataRange() {
     $("#ps-sata-count-range").slider({
         range: true,
@@ -234,6 +282,7 @@ function setPSSataRange() {
     $("#ps-sata-count").val($("#ps-sata-count-range").slider("values", 0) +
         " - " + $("#ps-sata-count-range").slider("values", 1));
 }
+
 function setPSPCIE6Range() {
     $("#ps-pcie6-count-range").slider({
         range: true,
@@ -249,6 +298,7 @@ function setPSPCIE6Range() {
     $("#ps-pcie6-count").val($("#ps-pcie6-count-range").slider("values", 0) +
         " - " + $("#ps-pcie6-count-range").slider("values", 1));
 }
+
 function setPSPCIE8Range() {
     $("#ps-pcie8-count-range").slider({
         range: true,
@@ -279,6 +329,7 @@ function setRamCapacityRange() {
     $("#ram-capacity").val($("#ram-capacity-range").slider("values", 0) +
         " - " + $("#ram-capacity-range").slider("values", 1));
 }
+
 function setRamFrequencyRange() {
     $("#ram-frequency-range").slider({
         range: true,
@@ -311,7 +362,14 @@ function filterCpu() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.cores + "</td><td>" + entry.flows + "</td><td>" + entry.frequency + "</td><td>" + entry.socketTitle + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" + entry.cores + "</td>" +
+                    "<td>" + entry.flows + "</td>" +
+                    "<td>" + entry.frequency + "</td>" +
+                    "<td>" + entry.socketTitle + "</td>" +
+                    "</tr>")
             });
         },
         error: function (error) {
@@ -335,7 +393,14 @@ function filterCs() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.typeTitle + "</td><td>" + entry.socketTitle + "</td><td>" + entry.fanDiameter + "</td><td>" + entry.fanCount + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.socketTitle + "</td><td>" +
+                    entry.typeTitle + "</td><td>" +
+                    entry.fanDiameter + "</td><td>" +
+                    entry.fanCount + "</td></tr>")
             });
         },
         error: function (error) {
@@ -358,7 +423,13 @@ function filterCse() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.cffTitle + "</td><td>" + entry.mffTitle + "</td><td>" + entry.windowTitle + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.cffTitle + "</td><td>" +
+                    entry.mffTitle + "</td><td>" +
+                    entry.windowTitle + "</td></tr>")
             });
         },
         error: function (error) {
@@ -379,7 +450,15 @@ function filterGpu() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.vram + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.item.manufacturer.title + "</td><td>" +
+                    entry.item.price + "</td><td>" +
+                    entry.item.count + "</td><td>" +
+                    "</td><td>" +
+                    entry.vram + "</td></tr>")
             });
         },
         error: function (error) {
@@ -403,7 +482,14 @@ function filterHd() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.typeTitle + "</td><td>" + entry.formFactorTitle + "</td><td>" + entry.capacity + "</td><td>" + entry.rwSpeed + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.typeTitle + "</td><td>" +
+                    entry.formFactorTitle + "</td><td>" +
+                    entry.capacity + "</td><td>" +
+                    entry.rwSpeed + "</td></tr>")
             });
         },
         error: function (error) {
@@ -428,16 +514,14 @@ function filterMb() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name +
-                    "</td><td>" + entry.item.manufacturer.title +
-                    "</td><td>" + entry.item.price +
-                    "</td><td>" + entry.item.count +
-                    "</td><td>" + entry.formFactorTitle +
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" + entry.formFactorTitle +
                     "</td><td>" + entry.socketTitle +
                     "</td><td>" + entry.ramTechTitle +
                     "</td><td>" + entry.chipsetTitle +
-                    "</td><td>" + entry.num_of_ram +
-                    "</td><td>" + entry.ports + "</td></tr>")
+                    "</td><td>" + entry.num_of_ram + "</td></tr>")
             });
         },
         error: function (error) {
@@ -461,7 +545,14 @@ function filterPs() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.power + "</td><td>" + entry.sataCount + "</td><td>" + entry.pcie6Count + "</td><td>" + entry.pcie8Count + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.power + "</td><td>" +
+                    entry.sataCount + "</td><td>" +
+                    entry.pcie6Count + "</td><td>" +
+                    entry.pcie8Count + "</td></tr>")
             });
         },
         error: function (error) {
@@ -484,7 +575,13 @@ function filterRam() {
         success: function (data) {
             $("#item-body").empty();
             $.each(data, function (id, entry) {
-                $("#item-body").append("<tr><td>" + entry.item.name + "</td><td>" + entry.item.manufacturer.title + "</td><td>" + entry.item.price + "</td><td>" + entry.item.count + "</td><td>" + entry.techTitle + "</td><td>" + entry.capacity + "</td><td>" + entry.frequency + "</td></tr>")
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "<td>" +
+                    entry.techTitle + "</td><td>" +
+                    entry.capacity + "</td><td>" +
+                    entry.frequency + "</td></tr>")
             });
         },
         error: function (error) {
@@ -493,7 +590,35 @@ function filterRam() {
     });
 }
 
+function commonTableParams(item) {
+    let cart = "<td>" + '<div class="row justify-content-center">' +
+        '<form method="post" id="quantity-form" action="/cart">' +
+        '<input type="hidden" name="_csrf" value="' + $("#csrf").val() + '"\'/>' +
+        '<input type="hidden" name="itemId" value="' + item.id + '">' +
+        '<input type="number" name="quantity" value="1" min="1" max="' + item.count + '" maxlength="2" class="col form-control">' +
+        '<button type="submit" class="col btn btn-secondary btn-sm quantity-button">+</button>' +
+        "</form></div></td>"
+    let userPart = "<td><a href='/item/" + item.id + "'>" + item.name + "</a></td>" +
+        "<td>" + item.manufacturer.title + "</td>" +
+        "<td>" + item.price + "</td>" +
+        "<td>" + item.count + "</td>";
+    let employeePart = "<td><a href='/items/edit/" + item.id + "' class='btn btn-secondary btn-sm'>Изменить</a></td>" +
+        "<td><form method='post' action='/items/count/add'>" +
+        "<input type='hidden' name='_csrf' value='" + $("#csrf").val() + "'/>" +
+        "<input type='hidden' name='itemId' value='" + item.id + "'>" +
+        "<input type='number' name='count' placeholder='Кол-во' class='w-50'>" +
+        "<input type='submit' value='Добавить' class='btn btn-secondary btn-sm'>" +
+        "</form>" +
+        "</td>"
+    if ($("#isEmployee").val() == "true")
+        return cart + userPart + employeePart;
+    else
+        return cart + userPart;
+
+}
+
 function switchFilters(elem) {
+
     $("#items-filter").children().hide();
     $("#filter-common").show();
     $('#characteristics-header > td[class*="toHide"]').hide();

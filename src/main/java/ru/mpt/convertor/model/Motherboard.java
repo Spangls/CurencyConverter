@@ -1,9 +1,13 @@
 package ru.mpt.convertor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "motherboard")
 public class Motherboard {
@@ -52,70 +56,6 @@ public class Motherboard {
         formFactorTitle = formFactor.getTitle();
         ramTechTitle = ramTech.getTitle();
         chipsetTitle = chipset.getTitle();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public MotherboardFormFactor getFormFactor() {
-        return formFactor;
-    }
-
-    public void setFormFactor(MotherboardFormFactor formFactor) {
-        this.formFactor = formFactor;
-    }
-
-    public Chipset getChipset() {
-        return chipset;
-    }
-
-    public void setChipset(Chipset chipset) {
-        this.chipset = chipset;
-    }
-
-    public Integer getNum_of_ram() {
-        return num_of_ram;
-    }
-
-    public void setNum_of_ram(Integer num_of_ram) {
-        this.num_of_ram = num_of_ram;
-    }
-
-    public RamTech getRamTech() {
-        return ramTech;
-    }
-
-    public void setRamTech(RamTech ramTech) {
-        this.ramTech = ramTech;
-    }
-
-    public String getPorts() {
-        return ports;
-    }
-
-    public void setPorts(String ports) {
-        this.ports = ports;
     }
 
     public String getSocketTitle() {

@@ -1,9 +1,13 @@
 package ru.mpt.convertor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "hard_drive")
 public class HardDrive {
@@ -39,54 +43,6 @@ public class HardDrive {
     private void postLoad(){
         typeTitle = type.getTitle();
         formFactorTitle = formFactor.getTitle();
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
-
-    public HDFormFactor getFormFactor() {
-        return formFactor;
-    }
-
-    public void setFormFactor(HDFormFactor formFactor) {
-        this.formFactor = formFactor;
-    }
-
-    public HDType getType() {
-        return type;
-    }
-
-    public void setType(HDType type) {
-        this.type = type;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Integer getRwSpeed() {
-        return rwSpeed;
-    }
-
-    public void setRwSpeed(Integer rwSpeed) {
-        this.rwSpeed = rwSpeed;
     }
 
     public String getFormFactorTitle() {

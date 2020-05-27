@@ -1,9 +1,13 @@
 package ru.mpt.convertor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+@Data
+@NoArgsConstructor
 @Entity
 @Table(name = "ram")
 public class Ram {
@@ -16,10 +20,10 @@ public class Ram {
     private Item item;
 
     @Column(name = "capacity")
-    private Integer capacity;
+    private int capacity;
 
     @Column(name = "frequency")
-    private Integer frequency;
+    private int frequency;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tech", nullable = false, length = 10)
@@ -32,47 +36,6 @@ public class Ram {
     @PostLoad
     private void postLoad(){
         techTitle = ramTech.getTitle();
-    }
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(Integer capacity) {
-        this.capacity = capacity;
-    }
-
-    public Integer getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(Integer speed) {
-        this.frequency = speed;
-    }
-
-    public RamTech getRamTech() {
-        return ramTech;
-    }
-
-    public void setRamTech(RamTech ramTech) {
-        this.ramTech = ramTech;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
     }
 
     public String getTechTitle() {

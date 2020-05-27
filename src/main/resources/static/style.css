@@ -10,15 +10,11 @@
 }
 
 #items-filter{
-    float: left;
     background: bisque;
-    width: 20%;
 
 }
 #items-result{
-    float: right;
     background: dimgray;
-    width: 80%;
 }
 
 .one-row{
