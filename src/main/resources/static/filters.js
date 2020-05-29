@@ -19,27 +19,11 @@ $(function () {
         });
         return o;
     };
-    $('input.follow-checkbox').change(function () {
-        let $this = $(this);
-        let form = $this.parents('form:first');
-        let url = form.attr('action');
-        let jsonData = form.serializeObject();
-        jsonData['follow'] = !!jsonData['follow'];
-        $.ajax({
-            type: "post",
-            url: url,
-            data: jsonData,
-            success: function (data) {
-                if (data == false)
-                    alert("Что-то пошло не так.")
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error))
-            }
-        });
+    $('input.follow-checkbox').change(function (){
+        follow()
     });
 
-    $('#characteristics-header > td[class*="toHide"]').hide();
+    $('#characteristics-header > th[class*="toHide"]').hide();
     $("#items-filter").children().hide();
     $("#filter-common").show();
     setCommonPriceRange();
@@ -71,6 +55,8 @@ function setCommonPriceRange() {
             $("#common-price").val(ui.values[0] + " - " + ui.values[1]);
             let switcher = $("#items-switcher").val();
             switch (switcher) {
+                case "common":
+
                 case "cpu":
                     filterCpu();
                     break;
@@ -346,6 +332,28 @@ function setRamFrequencyRange() {
         " - " + $("#ram-frequency-range").slider("values", 1));
 }
 
+function filterCommon() {
+    $.ajax({
+        type: 'POST',
+        url: "/items/common",
+        data: {
+            _csrf: $("input[name=_csrf]").val(),
+            prices: $("#common-price").val()
+        },
+        success: function (data) {
+            $("#item-body").empty();
+            $.each(data, function (id, entry) {
+                $("#item-body").append(
+                    "<tr>" +
+                    commonTableParams(entry.item) +
+                    "</tr>")
+            });
+        },
+        error: function (error) {
+            console.log(JSON.stringify(error));
+        }
+    });
+}
 
 function filterCpu() {
     $.ajax({
@@ -590,7 +598,39 @@ function filterRam() {
     });
 }
 
+function follow() {
+        let $this = $(this);
+        let form = $this.parents("form:first");
+        let url = form.attr("action");
+        let jsonData = form.serializeObject();
+        jsonData["follow"] = !!jsonData["follow"];
+        $.ajax({
+            type: "post",
+            url: url,
+            data: jsonData,
+            success: function (data) {
+                if (data == false)
+                    alert("Что-то пошло не так.")
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error))
+            }
+        });
+}
+
 function commonTableParams(item) {
+    let checked =  "";
+    if (item.followed == true)
+        checked = "checked";
+    let follow = "<td>" +
+        "<div class=\"row justify-content-center\">" +
+        "<form method=\"post\" id=\"follow-form\" action=\"/items/follow\">" +
+        '<input type="hidden" name="_csrf" value="' + $("#csrf").val() + '"\'/>' +
+        "<input type=\"hidden\" name=\"itemId\" value=\""  + item.id + "\">" +
+        "<input name=\"follow\" class=\"form-control follow-checkbox\" type=\"checkbox\"" + checked  + ">" +
+        "</form>" +
+        "</div>" +
+        "</td>";
     let cart = "<td>" + '<div class="row justify-content-center">' +
         '<form method="post" id="quantity-form" action="/cart">' +
         '<input type="hidden" name="_csrf" value="' + $("#csrf").val() + '"\'/>' +
@@ -598,7 +638,7 @@ function commonTableParams(item) {
         '<input type="number" name="quantity" value="1" min="1" max="' + item.count + '" maxlength="2" class="col form-control">' +
         '<button type="submit" class="col btn btn-secondary btn-sm quantity-button">+</button>' +
         "</form></div></td>"
-    let userPart = "<td><a href='/item/" + item.id + "'>" + item.name + "</a></td>" +
+    let userPart = "<td>" + item.id + "'>" + item.name + "</td>" +
         "<td>" + item.manufacturer.title + "</td>" +
         "<td>" + item.price + "</td>" +
         "<td>" + item.count + "</td>";
@@ -611,9 +651,9 @@ function commonTableParams(item) {
         "</form>" +
         "</td>"
     if ($("#isEmployee").val() == "true")
-        return cart + userPart + employeePart;
+        return follow + cart + userPart + employeePart;
     else
-        return cart + userPart;
+        return follow + cart + userPart;
 
 }
 
@@ -621,56 +661,75 @@ function switchFilters(elem) {
 
     $("#items-filter").children().hide();
     $("#filter-common").show();
-    $('#characteristics-header > td[class*="toHide"]').hide();
+    $('#characteristics-header > th[class*="toHide"]').hide();
     $("#item-body").empty();
     switch (elem.id) {
         case 'switch-cpu':
             $("#items-switcher").val("cpu");
             $("#filter-cpu").show();
-            $('#characteristics-header > td[class*="filter-cpu"]').show();
+            $('#characteristics-header > th[class*="filter-cpu"]').show();
             filterCpu();
             break;
         case 'switch-cs':
             $("#items-switcher").val("cs");
             $("#filter-cs").show();
-            $('#characteristics-header > td[class*="filter-cs"]').show();
+            $('#characteristics-header > th[class*="filter-cs"]').show();
             filterCs();
             break;
         case 'switch-mb':
             $("#items-switcher").val("mb");
             $("#filter-mb").show();
-            $('#characteristics-header > td[class*="filter-mb"]').show();
+            $('#characteristics-header > th[class*="filter-mb"]').show();
             filterMb();
             break;
         case 'switch-ram':
             $("#items-switcher").val("ram");
             $("#filter-ram").show();
-            $('#characteristics-header > td[class*="filter-ram"]').show();
+            $('#characteristics-header > th[class*="filter-ram"]').show();
             filterRam();
             break;
         case 'switch-gpu':
             $("#items-switcher").val("gpu");
             $("#filter-gpu").show();
-            $('#characteristics-header > td[class*="filter-gpu"]').show();
+            $('#characteristics-header > th[class*="filter-gpu"]').show();
             filterGpu();
             break;
         case 'switch-ps':
             $("#items-switcher").val("ps");
             $("#filter-ps").show();
-            $('#characteristics-header > td[class*="filter-ps"]').show();
+            $('#characteristics-header > th[class*="filter-ps"]').show();
             filterPs();
             break;
         case 'switch-case':
             $("#items-switcher").val("case");
             $("#filter-case").show();
-            $('#characteristics-header > td[class*="filter-case"]').show();
+            $('#characteristics-header > th[class*="filter-case"]').show();
             filterCse();
             break;
         case 'switch-hd':
             $("#items-switcher").val("hd");
             $("#filter-hd").show();
-            $('#characteristics-header > td[class*="filter-hd"]').show();
+            $('#characteristics-header > th[class*="filter-hd"]').show();
             filterHd();
             break;
     }
+    $('input.follow-checkbox').on('change', function (){
+        let $this = $(this);
+        let form = $this.parents("form:first");
+        let url = form.attr("action");
+        let jsonData = form.serializeObject();
+        jsonData["follow"] = !!jsonData["follow"];
+        $.ajax({
+            type: "post",
+            url: url,
+            data: jsonData,
+            success: function (data) {
+                if (data == false)
+                    alert("Что-то пошло не так.")
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error))
+            }
+        });
+    });
 }

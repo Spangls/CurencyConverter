@@ -8,7 +8,7 @@
             ${message}
         </div>
     </#if>
-    <form action="<#if customEdit??>/employee/user<#else>/user/edit</#if>" method="post">
+    <form action="<#if !customEdit??>/admin/user/save<#else>/user/edit</#if>" method="post">
         <div>
             <table>
                 <tbody>
@@ -36,8 +36,8 @@
                     <td><label for="second-name"/>Отчество</td>
                     <td><input type="text" name="secondName" id="second-name" value="${user.secondName}"></td>
                 </tr>
-                <#if customEdit??>
-                    <@security.authorize access="hasAuthority('EMPLOYEE')">
+                <#if !customEdit??>
+                    <@security.authorize access="hasAuthority('ADMIN')">
                         <tr>
                             <td>Уровни<br>доступа</td>
                             <td>
@@ -55,7 +55,7 @@
                 </tbody>
             </table>
         </div>
-
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <button type="submit">Сохранить</button>
     </form>
 </@body.body>

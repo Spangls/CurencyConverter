@@ -15,7 +15,7 @@
         <#list userList as user>
             <tr>
                 <td>${user.id}</td>
-                <td><a href="/user/${user.id}">${user.email}</a></td>
+                <td><a href="/admin/user/${user.id}">${user.email}</a></td>
                 <td><#list user.roles as role>${role}<#sep>, </#list></td>
                 <td>${user.surname} ${user.firstName} ${user.secondName}</td>
             </tr>

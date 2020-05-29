@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/items">Товары</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/service">Услуги</a>
+                </li>
                 <#if isEmployee || isAdmin>
                     <li class="nav-item">
                         <a class="nav-link" href="/manufacturer">Производители</a>
@@ -34,7 +37,7 @@
             <nav class="navbar navbar-light bg-light">
                 <a class="nav-link" href="/cart">Корзина</a>
             </nav>
-            <div class="navbar-text" href="/user/edit">${name}</div>
+            <div class="navbar-text"><a href="/user/edit">${name}</a></div>
             <nav class="navbar navbar-light bg-light">
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>

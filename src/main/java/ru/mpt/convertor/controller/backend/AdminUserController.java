@@ -43,7 +43,7 @@ public class AdminUserController {
         return "userEdit";
     }
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, value = "/save")
     public String saveUser(Model model,
             @RequestParam String email,
             @RequestParam String password,
@@ -69,7 +69,8 @@ public class AdminUserController {
                 user.getRoles().add(Role.valueOf(key));
             }
         }
+        user.getRoles().add(Role.USER);
         userService.save(user);
-        return "redirect:/"+BACK_USER_BASE;
+        return "redirect:/admin/user";
     }
 }

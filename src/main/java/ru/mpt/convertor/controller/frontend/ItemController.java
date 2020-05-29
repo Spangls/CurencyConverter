@@ -386,6 +386,16 @@ public class ItemController {
         return model;
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "common")
+    public @ResponseBody
+    List<Item> filterCommon(Principal principal, String prices) {
+        Stream<Item> items = itemService.findAll().stream();
+        items = items.filter(item -> item.getPrice() >= Utility.toIntMin(prices) &&item.getPrice() <= Utility.toIntMax(prices));
+        List<Item> finalized = items.collect(Collectors.toList());
+        finalized.forEach(item -> itemService.checkFollow(item, principal.getName()));
+        return finalized;
+    }
+
     @PostMapping("cpu")
     public @ResponseBody
     List<Cpu> filterCpu(Principal principal, String prices, String cores, String flows, String frequency, String socket) {
@@ -403,7 +413,7 @@ public class ItemController {
 
     @PostMapping("cs")
     public @ResponseBody
-    List<CoolingSystem> filterCS(String prices, String type, String diam, String count, String socket) {
+    List<CoolingSystem> filterCS(Principal principal, String prices, String type, String diam, String count, String socket) {
         Stream<CoolingSystem> css = coolingSystemRepo.findAll().stream();
         css = css.filter(cs -> cs.getItem().getPrice() >= Utility.toIntMin(prices) && cs.getItem().getPrice() <= Utility.toIntMax(prices));
         css = css.filter(cs -> cs.getFanDiameter() >= Utility.toIntMin(diam) && cs.getFanDiameter() <= Utility.toIntMax(diam));
@@ -413,13 +423,13 @@ public class ItemController {
         if (!type.equals("-1"))
             css = css.filter(cs -> cs.getType() == CoolingSystemType.valueOf(type));
         List<CoolingSystem> finalized = css.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("case")
     public @ResponseBody
-    List<Case> filterCase(String prices, String caseFF, String mbFF, String window) {
+    List<Case> filterCase(Principal principal, String prices, String caseFF, String mbFF, String window) {
         Stream<Case> cases = caseRepo.findAll().stream();
         cases = cases.filter(cs -> cs.getItem().getPrice() >= Utility.toIntMin(prices) && cs.getItem().getPrice() <= Utility.toIntMax(prices));
         if (!caseFF.equals("-1"))
@@ -429,24 +439,24 @@ public class ItemController {
         if (!window.equals("-1"))
             cases = cases.filter(cs -> cs.getWindow() == CaseWindow.valueOf(window));
         List<Case> finalized = cases.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("gpu")
     public @ResponseBody
-    List<Gpu> filterGpu(String prices, String vram) {
+    List<Gpu> filterGpu(Principal principal, String prices, String vram) {
         Stream<Gpu> gpus = gpuRepo.findAll().stream();
         gpus = gpus.filter(gpu -> gpu.getItem().getPrice() >= Utility.toIntMin(prices) && gpu.getItem().getPrice() <= Utility.toIntMax(prices));
         gpus = gpus.filter(gpu -> gpu.getVram() >= Utility.toFloatMin(vram) && gpu.getVram() <= Utility.toFloatMax(vram));
         List<Gpu> finalized = gpus.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("hd")
     public @ResponseBody
-    List<HardDrive> filterHD(String prices, String type, String hdFF, String capacity, String speed) {
+    List<HardDrive> filterHD(Principal principal, String prices, String type, String hdFF, String capacity, String speed) {
         Stream<HardDrive> hds = hdRepo.findAll().stream();
         hds = hds.filter(hd -> hd.getItem().getPrice() >= Utility.toIntMin(prices) && hd.getItem().getPrice() <= Utility.toIntMax(prices));
         hds = hds.filter(hd -> hd.getCapacity() >= Utility.toIntMin(capacity) && hd.getCapacity() <= Utility.toIntMax(capacity));
@@ -456,13 +466,13 @@ public class ItemController {
         if (!type.equals("-1"))
             hds = hds.filter(hd -> hd.getType() == HDType.valueOf(type));
         List<HardDrive> finalized = hds.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("mb")
     public @ResponseBody
-    List<Motherboard> filterMB(String prices, String socket, String mbFF, String chipset, String ramCount, String ramTech) {
+    List<Motherboard> filterMB(Principal principal, String prices, String socket, String mbFF, String chipset, String ramCount, String ramTech) {
         Stream<Motherboard> mbs = motherboardRepo.findAll().stream();
         mbs = mbs.filter(mb -> mb.getItem().getPrice() >= Utility.toIntMin(prices) && mb.getItem().getPrice() <= Utility.toIntMax(prices));
         mbs = mbs.filter(mb -> mb.getNum_of_ram() >= Utility.toIntMin(ramCount) && mb.getNum_of_ram() <= Utility.toIntMax(ramCount));
@@ -475,13 +485,13 @@ public class ItemController {
         if (!ramTech.equals("-1"))
             mbs = mbs.filter(mb -> mb.getRamTech() == RamTech.valueOf(ramTech));
         List<Motherboard> finalized = mbs.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("ps")
     public @ResponseBody
-    List<PowerSupply> filterPS(String prices, String power, String sata, String pcie6, String pcie8) {
+    List<PowerSupply> filterPS(Principal principal, String prices, String power, String sata, String pcie6, String pcie8) {
         Stream<PowerSupply> pss = powerSupplyRepo.findAll().stream();
         pss = pss.filter(ps -> ps.getItem().getPrice() >= Utility.toIntMin(prices) && ps.getItem().getPrice() <= Utility.toIntMax(prices));
         pss = pss.filter(ps -> ps.getPower() >= Utility.toIntMin(power) && ps.getPower() <= Utility.toIntMax(power));
@@ -489,13 +499,13 @@ public class ItemController {
         pss = pss.filter(ps -> ps.getPcie6Count() >= Utility.toIntMin(pcie6) && ps.getPcie6Count() <= Utility.toIntMax(pcie6));
         pss = pss.filter(ps -> ps.getPcie8Count() >= Utility.toIntMin(pcie8) && ps.getPcie8Count() <= Utility.toIntMax(pcie8));
         List<PowerSupply> finalized = pss.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 
     @PostMapping("ram")
     public @ResponseBody
-    List<Ram> filterRam(String prices, String capacity, String frequency, String tech) {
+    List<Ram> filterRam(Principal principal, String prices, String capacity, String frequency, String tech) {
         Stream<Ram> rams = ramRepo.findAll().stream();
         rams = rams.filter(ram -> ram.getItem().getPrice() >= Utility.toIntMin(prices) && ram.getItem().getPrice() <= Utility.toIntMax(prices));
         rams = rams.filter(ram -> ram.getCapacity() >= Utility.toIntMin(capacity) && ram.getCapacity() <= Utility.toIntMax(capacity));
@@ -503,7 +513,7 @@ public class ItemController {
         if (!tech.equals("-1"))
             rams = rams.filter(ram -> ram.getRamTech() == RamTech.valueOf(tech));
         List<Ram> finalized = rams.collect(Collectors.toList());
-        finalized.forEach(ram -> itemService.calculateCount(ram.getItem()));
+        finalized.forEach(ram -> itemService.checkFollow(ram.getItem(), principal.getName()));
         return finalized;
     }
 

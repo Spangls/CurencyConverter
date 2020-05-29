@@ -39,41 +39,41 @@
     </div>
     <br>
     <div id="items-body">
-        <div id="items-result" class="row table">
-            <table>
+        <div id="items-result" class="row">
+            <table class="table">
                 <thead>
                 <tr id="characteristics-header">
-                    <td>Слежение</td>
-                    <td></td>
-                    <td>Наименование</td>
-                    <td>Производитель</td>
-                    <td>Цена</td>
-                    <td>Количество</td>
+                    <th>Слежение</th>
+                    <th>В корзину</th>
+                    <th>Наименование</th>
+                    <th>Производитель</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
                     <@security.authorize access="hasAuthority('EMPLOYEE')">
-                        <td>Действия</td>
-                        <td>Поставки</td>
+                        <th>Действия</th>
+                        <th>Поставки</th>
                     </@security.authorize>
-                    <td class="filter-cpu toHide">Ядер</td>
-                    <td class="filter-cpu toHide">Потоков</td>
-                    <td class="filter-cpu toHide">Частота работы, ГГц</td>
-                    <td class="filter-cpu filter-cs toHide">Сокет</td>
-                    <td class="filter-cs filter-ram filter-hd toHide" hidden>Тип</td>
-                    <td class="filter-cs toHide">Диаметр Вентиляторов, мм</td>
-                    <td class="filter-cs toHide">Кол-во вентиляторов</td>
-                    <td class="filter-case filter-hd toHide">Типоразмер</td>
-                    <td class="filter-case filter-mb toHide">Форм-фактор</td>
-                    <td class="filter-case toHide">Материал бокового окна</td>
-                    <td class="filter-mb toHide">Сокет</td>
-                    <td class="filter-mb toHide">Тип ОЗУ</td>
-                    <td class="filter-mb toHide">Чипсет</td>
-                    <td class="filter-mb toHide">Слотов под ОЗУ</td>
-                    <td class="filter-ram filter-gpu filter-hd toHide">Объем памяти, ГБ</td>
-                    <td class="filter-ram toHide">Частота, МГц</td>
-                    <td class="filter-ps toHide">Мощность, Вт</td>
-                    <td class="filter-ps toHide">Кол-во SATA</td>
-                    <td class="filter-ps toHide">Кол-во PCIe-6</td>
-                    <td class="filter-ps toHide">Кол-во PCIe-8</td>
-                    <td class="filter-hd toHide">Скорость работы, МБ/с</td>
+                    <th class="filter-cpu toHide">Ядер</th>
+                    <th class="filter-cpu toHide">Потоков</th>
+                    <th class="filter-cpu toHide">Частота работы, ГГц</th>
+                    <th class="filter-cpu filter-cs toHide">Сокет</th>
+                    <th class="filter-cs filter-ram filter-hd toHide" hidden>Тип</th>
+                    <th class="filter-cs toHide">Диаметр Вентиляторов, мм</th>
+                    <th class="filter-cs toHide">Кол-во вентиляторов</th>
+                    <th class="filter-case filter-hd toHide">Типоразмер</th>
+                    <th class="filter-case filter-mb toHide">Форм-фактор</th>
+                    <th class="filter-case toHide">Материал бокового окна</th>
+                    <th class="filter-mb toHide">Сокет</th>
+                    <th class="filter-mb toHide">Тип ОЗУ</th>
+                    <th class="filter-mb toHide">Чипсет</th>
+                    <th class="filter-mb toHide">Слотов под ОЗУ</th>
+                    <th class="filter-ram filter-gpu filter-hd toHide">Объем памяти, ГБ</th>
+                    <th class="filter-ram toHide">Частота, МГц</th>
+                    <th class="filter-ps toHide">Мощность, Вт</th>
+                    <th class="filter-ps toHide">Кол-во SATA</th>
+                    <th class="filter-ps toHide">Кол-во PCIe-6</th>
+                    <th class="filter-ps toHide">Кол-во PCIe-8</th>
+                    <th class="filter-hd toHide">Скорость работы, МБ/с</th>
                 </tr>
                 </thead>
                 <tbody id="item-body">
@@ -98,7 +98,7 @@
                                 </form>
                             </div>
                         </td>
-                        <td><a href="/item/${item.id}">${item.name}</a></td>
+                        <td>${item.name}</td>
                         <td>${item.manufacturer.title}</td>
                         <td>${item.price}</td>
                         <td>${item.count}</td>

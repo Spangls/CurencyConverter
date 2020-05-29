@@ -44,15 +44,12 @@ public class Item implements Serializable {
     @OneToMany(mappedBy = "item")
     @JsonIgnore
     private Set<Count> counts;
-    @OneToMany(mappedBy = "item")
-    private Set<Picture> pictures;
 
     @Transient
     private Float price = 0f;
     @Transient
     private Integer count = 0;
 
-    @JsonIgnore
     @OneToOne(mappedBy = "item")
     private Cpu cpu;
     @JsonIgnore

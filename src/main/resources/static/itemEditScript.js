@@ -1,6 +1,5 @@
 $(document).ready(function () {
     switchType();
-
 })
 
 function switchType() {

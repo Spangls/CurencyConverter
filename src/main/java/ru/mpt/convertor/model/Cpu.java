@@ -19,6 +19,8 @@ public class Cpu{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @JsonIgnore
     @JoinColumn(name = "item_id", nullable = false)
     @OneToOne(fetch = FetchType.EAGER)
     @NonNull
@@ -32,13 +34,13 @@ public class Cpu{
 
     @NonNull
     @Column(name = "cores")
-    private Integer cores;
+    private int cores;
     @NonNull
     @Column(name = "flows")
-    private Integer flows;
+    private int flows;
     @NonNull
     @Column(name = "frequency")
-    private Float frequency;
+    private float frequency;
 
     @Transient
     private String socketTitle;

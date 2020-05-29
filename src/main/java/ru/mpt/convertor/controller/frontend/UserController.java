@@ -1,9 +1,12 @@
 package ru.mpt.convertor.controller.frontend;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.mpt.convertor.model.Role;
 import ru.mpt.convertor.model.User;
 import ru.mpt.convertor.service.MailSender;
 import ru.mpt.convertor.service.UserService;
@@ -18,7 +21,7 @@ public class UserController {
     private final UserService userService;
     private final MailSender mailSender;
 
-    public UserController(UserService userService, MailSender mailSender){
+    public UserController(UserService userService, MailSender mailSender) {
         this.userService = userService;
         this.mailSender = mailSender;
     }
@@ -70,7 +73,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/edit")
-    public String editUser(Principal principal, Model model){
+    public String editUser(Principal principal, Model model) {
         User user = userService.findByEmail(principal.getName());
         if (user == null)
             return "redirect:/login";
@@ -85,18 +88,20 @@ public class UserController {
                            @RequestParam String password,
                            @RequestParam String surname,
                            @RequestParam String firstName,
-                           @RequestParam String secondName){
+                           @RequestParam String secondName) {
         User user = userService.findByEmail(principal.getName());
-        if (email.trim().isEmpty() || password.trim().isEmpty() || firstName.trim().isEmpty()){
+        if (email.trim().isEmpty() || firstName.trim().isEmpty()) {
             model.addAttribute("message", "Одно из обязательных полей не заполнено.");
             return "userEdit";
         }
         user.setEmail(email.trim());
-        user.setPassword(password.trim());
+        if (!password.trim().isEmpty()) user.setPassword(password.trim());
         user.setFirstName(firstName.trim());
-        user.setSecondName(secondName.trim());
-        user.setSurname(surname.trim());
+        if (!secondName.trim().isEmpty())user.setSecondName(secondName.trim());
+        if (!surname.trim().isEmpty())user.setSurname(surname.trim());
+        userService.save(user);
         model.addAttribute("user", user);
+        model.addAttribute("customEdit", true);
         return "userEdit";
     }
 }
