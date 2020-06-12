@@ -5,11 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Data
 @Entity
 @Table(name = "price")
-@Getter
-@Setter
 @NoArgsConstructor
+@RequiredArgsConstructor
 public class Price{
 
     @Id
@@ -27,10 +27,4 @@ public class Price{
     @Column(name = "date")
     @NonNull
     private LocalDate date;
-
-    public Price(Item item, Float price) {
-        this.item =  item;
-        this.price  = price;
-        this.date = LocalDate.now();
-    }
 }

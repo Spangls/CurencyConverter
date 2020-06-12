@@ -11,6 +11,7 @@ import ru.mpt.convertor.model.User;
 import ru.mpt.convertor.service.MailSender;
 import ru.mpt.convertor.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "reset")
-    public String sendResetCode(String email, Model model) {
+    public String sendResetCode(HttpServletRequest request, String email, Model model) {
         User user = userService.findByEmail(email);
         if (user == null) {
             model.addAttribute("message", "Пользователь не найден.");
@@ -42,8 +43,9 @@ public class UserController {
         userService.save(user);
         String message = String.format(
                 "Доброго времени суток, %s! \n" +
-                        "Для перехода на страницу восстановления пароля перейдите по ссылке: http://localhost:8080/user/saveNew/%s",
+                        "Для перехода на страницу восстановления пароля перейдите по ссылке: http://%s:8080/user/saveNew/%s",
                 user.getFirstName(),
+                request.getServerName(),
                 user.getPasswordResetCode()
         );
         mailSender.send(user.getEmail(), "Код восстановления", message);

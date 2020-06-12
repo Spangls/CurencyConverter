@@ -46,7 +46,6 @@
                     <th>Слежение</th>
                     <th>В корзину</th>
                     <th>Наименование</th>
-                    <th>Производитель</th>
                     <th>Цена</th>
                     <th>Количество</th>
                     <@security.authorize access="hasAuthority('EMPLOYEE')">
@@ -56,18 +55,25 @@
                     <th class="filter-cpu toHide">Ядер</th>
                     <th class="filter-cpu toHide">Потоков</th>
                     <th class="filter-cpu toHide">Частота работы, ГГц</th>
-                    <th class="filter-cpu filter-cs toHide">Сокет</th>
-                    <th class="filter-cs filter-ram filter-hd toHide" hidden>Тип</th>
+                    <th class="filter-cpu toHide">Сокет</th>
+                    <th class="filter-cs toHide">Сокет</th>
+                    <th class="filter-cs toHide" >Тип</th>
+                    <th class="filter-ram toHide" >Тип</th>
+                    <th class="filter-hd toHide" >Тип</th>
                     <th class="filter-cs toHide">Диаметр Вентиляторов, мм</th>
                     <th class="filter-cs toHide">Кол-во вентиляторов</th>
-                    <th class="filter-case filter-hd toHide">Типоразмер</th>
-                    <th class="filter-case filter-mb toHide">Форм-фактор</th>
+                    <th class="filter-case toHide">Типоразмер</th>
+                    <th class="filter-hd toHide">Типоразмер</th>
+                    <th class="filter-case toHide">Форм-фактор</th>
+                    <th class="filter-mb toHide">Форм-фактор</th>
                     <th class="filter-case toHide">Материал бокового окна</th>
                     <th class="filter-mb toHide">Сокет</th>
                     <th class="filter-mb toHide">Тип ОЗУ</th>
                     <th class="filter-mb toHide">Чипсет</th>
                     <th class="filter-mb toHide">Слотов под ОЗУ</th>
-                    <th class="filter-ram filter-gpu filter-hd toHide">Объем памяти, ГБ</th>
+                    <th class="filter-ram toHide">Объем памяти, ГБ</th>
+                    <th class="filter-gpu toHide">Объем памяти, ГБ</th>
+                    <th class="filter-hd toHide">Объем памяти, ГБ</th>
                     <th class="filter-ram toHide">Частота, МГц</th>
                     <th class="filter-ps toHide">Мощность, Вт</th>
                     <th class="filter-ps toHide">Кол-во SATA</th>
@@ -98,8 +104,7 @@
                                 </form>
                             </div>
                         </td>
-                        <td>${item.name}</td>
-                        <td>${item.manufacturer.title}</td>
+                        <td>${item.manufacturer.title} ${item.name}</td>
                         <td>${item.price}</td>
                         <td>${item.count}</td>
                         <@security.authorize access="hasAuthority('EMPLOYEE')">

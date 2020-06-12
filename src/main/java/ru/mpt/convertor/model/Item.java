@@ -50,6 +50,7 @@ public class Item implements Serializable {
     @Transient
     private Integer count = 0;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "item")
     private Cpu cpu;
     @JsonIgnore

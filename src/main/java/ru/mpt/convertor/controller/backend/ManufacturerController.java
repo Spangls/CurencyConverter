@@ -47,6 +47,8 @@ public class ManufacturerController {
     @PostMapping("edit")
     public String editManufacturer(@RequestParam String title, @RequestParam("manufacturerId") Manufacturer manufacturer, Model model) {
         title = title.trim();
+        if (manufacturer.getTitle().equals(title))
+            return "redirect:/manufacturer";
         if (manufacturerRepo.findFirstByTitle(title) != null) {
             model.addAttribute("message", "Данный производитель уже в базе данных.");
             return "manufacturerEdit";
@@ -59,13 +61,19 @@ public class ManufacturerController {
     @PostMapping("save")
     public String saveManufacturer(@RequestParam String title, @RequestParam(value = "manufacturerId", required = false) Manufacturer manufacturer, Model model) {
         title = title.trim();
+        if (manufacturer == null) {
+            if (manufacturerRepo.findFirstByTitle(title) != null) {
+                model.addAttribute("message", "Данный производитель уже в базе данных.");
+                return "manufacturerEdit";
+            }
+            manufacturerRepo.save(new Manufacturer(title));
+            return "redirect:/manufacturer";
+        }
+        if (manufacturer.getTitle().equals(title))
+            return "redirect:/manufacturer";
         if (manufacturerRepo.findFirstByTitle(title) != null) {
             model.addAttribute("message", "Данный производитель уже в базе данных.");
             return "manufacturerEdit";
-        }
-        if (manufacturer == null) {
-            manufacturerRepo.save(new Manufacturer(title));
-            return "redirect:/manufacturer";
         }
         manufacturer.setTitle(title);
         manufacturerRepo.save(manufacturer);

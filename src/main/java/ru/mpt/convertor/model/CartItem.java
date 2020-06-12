@@ -7,8 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "cart_item")
 public class CartItem implements Serializable {
@@ -64,6 +62,9 @@ public class CartItem implements Serializable {
         this.cart = cart;
         this.item = item;
         this.quantity = quantity;
+    }
+
+    public CartItem() {
     }
 
     @Override

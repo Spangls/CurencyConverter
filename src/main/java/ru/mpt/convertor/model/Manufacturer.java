@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@ToString
 @Entity
 public class Manufacturer {
     @Id
@@ -17,4 +16,9 @@ public class Manufacturer {
     @NonNull
     @Column(name = "title", nullable = false)
     private String title;
+
+    @Override
+    public String toString(){
+        return getTitle();
+    }
 }

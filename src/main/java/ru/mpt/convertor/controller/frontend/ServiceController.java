@@ -60,7 +60,7 @@ public class ServiceController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = {"all", "/all/{state}"})
-    public String getServices(@PathVariable(required = false, name = "state") String state, @RequestParam int serviceId, Model model){
+    public String finishService(@PathVariable(required = false, name = "state") String state, @RequestParam int serviceId, Model model){
         if (!orderedServiceService.finishOrderedService(serviceId))
             model.addAttribute("message", "Что-то пошло не так. Попробуйте позже!");
         List<OrderedService> services = null;

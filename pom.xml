@@ -9,14 +9,14 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.mpt</groupId>
-    <artifactId>convertor</artifactId>
+    <artifactId>mypc</artifactId>
     <version>1</version>
     <name>mypc</name>
     <description>Demo project for Spring Boot</description>
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>13</java.version>
+        <java.version>8</java.version>
     </properties>
 
     <dependencies>

@@ -19,6 +19,7 @@
         <div class="col-md-4">
             <#if cart?? && cart.itemsCount != 0>
                 <form method="post" action="/cart/clear">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <button type="submit" class="btn btn-secondary">
                         очистить корзину
                     </button>

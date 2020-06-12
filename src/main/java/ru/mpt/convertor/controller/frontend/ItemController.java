@@ -12,7 +12,9 @@ import ru.mpt.convertor.service.FollowedItemService;
 import ru.mpt.convertor.service.ItemService;
 import ru.mpt.convertor.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +136,7 @@ public class ItemController {
         return "itemEdit";
     }
 
-    @PostMapping("/follow")
+    @RequestMapping(method = RequestMethod.POST, value = "/follow")
     public @ResponseBody boolean followItem(Principal principal, @RequestParam int itemId, @RequestParam boolean follow){
         String userEmail =  principal.getName();
         if (follow){
@@ -158,7 +160,8 @@ public class ItemController {
             @RequestParam Integer cores,
             @RequestParam Integer flows,
             @RequestParam Float frequency,
-            @RequestParam Socket socket) {
+            @RequestParam Socket socket,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (cpu == null)
             cpu = new Cpu();
@@ -168,7 +171,7 @@ public class ItemController {
         cpu.setFlows(flows);
         cpu.setFrequency(frequency);
         cpuRepo.save(cpu);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
 
@@ -185,7 +188,8 @@ public class ItemController {
             @RequestParam CoolingSystemType type,
             @RequestParam Integer fanCount,
             @RequestParam Integer fanDiam,
-            @RequestParam Socket socket) {
+            @RequestParam Socket socket,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (cs == null)
             cs = new CoolingSystem();
@@ -195,7 +199,7 @@ public class ItemController {
         cs.setFanDiameter(fanDiam);
         cs.setSocket(socket);
         coolingSystemRepo.save(cs);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/case")
@@ -208,9 +212,10 @@ public class ItemController {
             @RequestParam(name = "itemType") ItemType itemType,
             @RequestParam Float price,
             @RequestParam(name = "caseId", required = false) Case _case,
-            @RequestParam CaseFormFactor caseFormFactor,
-            @RequestParam MotherboardFormFactor mbFormFactor,
-            @RequestParam CaseWindow window) {
+            @RequestParam(name = "caseFF") CaseFormFactor caseFormFactor,
+            @RequestParam(name = "motherboardFF") MotherboardFormFactor mbFormFactor,
+            @RequestParam(name = "window") CaseWindow window,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (_case == null)
             _case = new Case();
@@ -219,7 +224,7 @@ public class ItemController {
         _case.setMotherboardFormFactor(mbFormFactor);
         _case.setWindow(window);
         caseRepo.save(_case);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/gpu")
@@ -232,14 +237,15 @@ public class ItemController {
             @RequestParam(name = "itemType") ItemType itemType,
             @RequestParam Float price,
             @RequestParam(name = "gpuId", required = false) Gpu gpu,
-            @RequestParam Float vram) {
+            @RequestParam Float vram,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (gpu == null)
             gpu = new Gpu();
         gpu.setItem(item);
         gpu.setVram(vram);
         gpuRepo.save(gpu);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/hd")
@@ -255,7 +261,8 @@ public class ItemController {
             @RequestParam HDType type,
             @RequestParam HDFormFactor formFactor,
             @RequestParam Integer capacity,
-            @RequestParam Integer speed) {
+            @RequestParam Integer speed,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (hardDrive == null)
             hardDrive = new HardDrive();
@@ -265,7 +272,7 @@ public class ItemController {
         hardDrive.setCapacity(capacity);
         hardDrive.setRwSpeed(speed);
         hdRepo.save(hardDrive);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/mb")
@@ -283,7 +290,8 @@ public class ItemController {
             @RequestParam Chipset chipset,
             @RequestParam RamTech ramTech,
             @RequestParam Integer ramSlotCount,
-            @RequestParam String ports) {
+            @RequestParam String ports,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (motherboard == null)
             motherboard = new Motherboard();
@@ -295,7 +303,7 @@ public class ItemController {
         motherboard.setNum_of_ram(ramSlotCount);
         motherboard.setPorts(ports);
         motherboardRepo.save(motherboard);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/ps")
@@ -311,7 +319,8 @@ public class ItemController {
             @RequestParam Integer power,
             @RequestParam Integer sata,
             @RequestParam Integer pcie6,
-            @RequestParam Integer pcie8) {
+            @RequestParam Integer pcie8,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (powerSupply == null)
             powerSupply = new PowerSupply();
@@ -321,7 +330,7 @@ public class ItemController {
         powerSupply.setPcie6Count(pcie6);
         powerSupply.setPcie8Count(pcie8);
         powerSupplyRepo.save(powerSupply);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
 
     @PostMapping("save/ram")
@@ -336,7 +345,8 @@ public class ItemController {
             @RequestParam(name = "ramId", required = false) Ram ram,
             @RequestParam RamTech tech,
             @RequestParam Integer capacity,
-            @RequestParam Integer frequency) {
+            @RequestParam Integer frequency,
+            HttpServletRequest request) {
         item = saveItem(item, name, manufacturer, itemType, price);
         if (ram == null)
             ram = new Ram();
@@ -345,7 +355,7 @@ public class ItemController {
         ram.setCapacity(capacity);
         ram.setFrequency(frequency);
         ramRepo.save(ram);
-        return "http://localhost:8080/items";
+        return "http://"+request.getServerName()+":8080/items";
     }
     //endregion
 
@@ -358,8 +368,8 @@ public class ItemController {
             item.setType(itemType);
         }
         item = itemService.save(item);
-        if (item.getPrice() != price) {
-            priceRepo.save(new Price(item, price));
+        if (!item.getPrice().equals(price)) {
+            priceRepo.save(new Price(item, price, LocalDate.now()));
             item = itemService.findFirstById(item.getId());
         }
         return item;
@@ -521,7 +531,7 @@ public class ItemController {
         model.addAttribute("motherboardFormFactorList", MotherboardFormFactor.values());
         model.addAttribute("ramTechList", RamTech.values());
         model.addAttribute("socketList", Socket.values());
-        model.addAttribute("coolingSystemTypeList", Socket.values());
+        model.addAttribute("coolingSystemTypeList", CoolingSystemType.values());
         model.addAttribute("caseFormFactorList", CaseFormFactor.values());
         model.addAttribute("caseWindowList", CaseWindow.values());
         model.addAttribute("chipsetList", Chipset.values());

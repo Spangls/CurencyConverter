@@ -20,7 +20,6 @@ public class Cpu{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @JsonIgnore
     @JoinColumn(name = "item_id", nullable = false)
     @OneToOne(fetch = FetchType.EAGER)
     @NonNull

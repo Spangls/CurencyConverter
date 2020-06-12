@@ -20,7 +20,23 @@ $(function () {
         return o;
     };
     $('input.follow-checkbox').change(function (){
-        follow()
+        let $this = $(this);
+        let form = $this.parents("form:first");
+        let url = form.attr("action");
+        let jsonData = form.serializeObject();
+        jsonData["follow"] = !!jsonData["follow"];
+        $.ajax({
+            type: "post",
+            url: url,
+            data: jsonData,
+            success: function (data) {
+                if (data == false)
+                    alert("Что-то пошло не так.")
+            },
+            error: function (error) {
+                console.log(JSON.stringify(error))
+            }
+        });
     });
 
     $('#characteristics-header > th[class*="toHide"]').hide();
@@ -462,10 +478,6 @@ function filterGpu() {
                     "<tr>" +
                     commonTableParams(entry.item) +
                     "<td>" +
-                    entry.item.manufacturer.title + "</td><td>" +
-                    entry.item.price + "</td><td>" +
-                    entry.item.count + "</td><td>" +
-                    "</td><td>" +
                     entry.vram + "</td></tr>")
             });
         },
@@ -599,23 +611,7 @@ function filterRam() {
 }
 
 function follow() {
-        let $this = $(this);
-        let form = $this.parents("form:first");
-        let url = form.attr("action");
-        let jsonData = form.serializeObject();
-        jsonData["follow"] = !!jsonData["follow"];
-        $.ajax({
-            type: "post",
-            url: url,
-            data: jsonData,
-            success: function (data) {
-                if (data == false)
-                    alert("Что-то пошло не так.")
-            },
-            error: function (error) {
-                console.log(JSON.stringify(error))
-            }
-        });
+
 }
 
 function commonTableParams(item) {
@@ -638,8 +634,7 @@ function commonTableParams(item) {
         '<input type="number" name="quantity" value="1" min="1" max="' + item.count + '" maxlength="2" class="col form-control">' +
         '<button type="submit" class="col btn btn-secondary btn-sm quantity-button">+</button>' +
         "</form></div></td>"
-    let userPart = "<td>" + item.id + "'>" + item.name + "</td>" +
-        "<td>" + item.manufacturer.title + "</td>" +
+    let userPart = "<td>" + item.manufacturer.title + " " + item.name +"</td>" +
         "<td>" + item.price + "</td>" +
         "<td>" + item.count + "</td>";
     let employeePart = "<td><a href='/items/edit/" + item.id + "' class='btn btn-secondary btn-sm'>Изменить</a></td>" +
@@ -718,6 +713,7 @@ function switchFilters(elem) {
         let form = $this.parents("form:first");
         let url = form.attr("action");
         let jsonData = form.serializeObject();
+
         jsonData["follow"] = !!jsonData["follow"];
         $.ajax({
             type: "post",

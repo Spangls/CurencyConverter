@@ -52,15 +52,17 @@ public class AdminUserController {
             @RequestParam String secondName,
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user) {
-        if (email.trim().isEmpty() || password.trim().isEmpty() || firstName.trim().isEmpty()){
+        if (email.trim().isEmpty() ||firstName.trim().isEmpty()){
+            model.addAttribute("user", user);
+            model.addAttribute("roles", Role.values());
             model.addAttribute("message", "Одно из обязательных полей не заполнено.");
             return "userEdit";
         }
         user.setEmail(email.trim());
-        user.setPassword(password.trim());
+        if (!password.trim().isEmpty()) user.setPassword(password.trim());
         user.setFirstName(firstName.trim());
-        user.setSecondName(secondName.trim());
-        user.setSurname(surname.trim());
+        if (!secondName.trim().isEmpty())user.setSecondName(secondName.trim());
+        if (!surname.trim().isEmpty())user.setSurname(surname.trim());
 
         Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
         user.getRoles().clear();

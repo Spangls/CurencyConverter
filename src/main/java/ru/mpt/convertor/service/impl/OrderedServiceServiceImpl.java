@@ -2,9 +2,11 @@ package ru.mpt.convertor.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.mpt.convertor.model.Order;
 import ru.mpt.convertor.model.OrderedService;
 import ru.mpt.convertor.model.User;
 import ru.mpt.convertor.repos.ServiceRepo;
+import ru.mpt.convertor.service.MailSender;
 import ru.mpt.convertor.service.OrderedServiceService;
 import ru.mpt.convertor.service.UserService;
 
@@ -16,10 +18,12 @@ public class OrderedServiceServiceImpl  implements OrderedServiceService {
 
     private final ServiceRepo serviceRepo;
     private final UserService userService;
+    private final MailSender mailSender;
 
-    public OrderedServiceServiceImpl(ServiceRepo serviceRepo, UserService userService) {
+    public OrderedServiceServiceImpl(ServiceRepo serviceRepo, UserService userService, MailSender mailSender) {
         this.serviceRepo = serviceRepo;
         this.userService = userService;
+        this.mailSender =  mailSender;
     }
 
     @Override
@@ -49,6 +53,7 @@ public class OrderedServiceServiceImpl  implements OrderedServiceService {
             return false;
         service.setActive(false);
         serviceRepo.save(service);
+        mailSender.send(service.getUser().getEmail(), "Готовность заказа", getFinishMailText(service));
         return true;
     }
 
@@ -62,5 +67,10 @@ public class OrderedServiceServiceImpl  implements OrderedServiceService {
         service.setService(serviceType);
         service.setUser(user);
         return service;
+    }
+
+    private String getFinishMailText(OrderedService service){
+        return String.format("Доброго времени суток, %s!\n" +
+                "Спешим оповестить вас, что ваш заказ №%s от %s готов к выдаче.\n", service.getUser().getFirstName(), service.getId(), service.getDate());
     }
 }

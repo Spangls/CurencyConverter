@@ -5,10 +5,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "cart")
@@ -25,7 +22,7 @@ public class Cart implements Serializable {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true,
             targetEntity = CartItem.class, mappedBy = "cart")
-    private List<CartItem> cartItems = new ArrayList<>(0);
+    private Set<CartItem> cartItems = new HashSet<>(0);
 
     @Column(name = "total_cost")
     private Integer itemsCost;
@@ -42,11 +39,11 @@ public class Cart implements Serializable {
         itemsCount = calculateItemsCount();
     }
 
-    public List<CartItem> getCartItems() {
-        return Collections.unmodifiableList(cartItems);
+    public Set<CartItem> getCartItems() {
+        return Collections.unmodifiableSet(cartItems);
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
+    public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
     }
 
